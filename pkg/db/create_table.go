@@ -7,6 +7,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+
 func Create_Table(name string) {
 
 	schema1 := `
