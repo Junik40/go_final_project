@@ -33,27 +33,63 @@ func AddTask(task Tasks) (int64, error){
 	return id, err
 }
 
-func GetTasks(limit int) ([]Tasks, error) {
+func GetTasks(limit int) ([]*Tasks, error) {
 	var tasks []Tasks
 	db, err := sql.Open("sqlite", "./pkg/db/scheduler.db")
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-
-	rows, err := db.Query("SELECT * FROM scheduler LIMIT ? ORDER BY date ASC", limit)
+	query := fmt.Sprintf("SELECT * FROM scheduler ORDER BY date ASC LIMIT %d", limit)
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	
 	for rows.Next() {
 		var task Tasks
 		if err := rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat); err != nil {
 			return nil, err
 		}
-		fmt.Println(task)
 		tasks = append(tasks, task)
+		
 	}
-	return tasks, nil
+	rows.Close()
+	var tasksp []*Tasks
+	for i := range tasks{tasksp = append(tasksp, &tasks[i])}
+	return tasksp, nil
 }
+func GetTask(id string) (Tasks, error) {
+	var task Tasks
+	db, err := sql.Open("sqlite", "./pkg/db/scheduler.db")
+	if err != nil {
+		return task, err
+	}
+	defer db.Close()
+	query := fmt.Sprintf("SELECT * FROM scheduler WHERE ID = %s", id)
+	row := db.QueryRow(query)
+	row.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
 
+	return task, nil
+	
+}
+func UpdateTask(task *Tasks) error {
+	db, err := sql.Open("sqlite", "./pkg/db/scheduler.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	query := fmt.Sprintf("UPDATE scheduler SET date = '%s', title = '%s', comment = '%s', repeat = '%s' WHERE id = %s", task.Date, task.Title, task.Comment, task.Repeat, task.ID)
+	res, err := db.Exec(query)
+	if err != nil {
+		return err
+	}
+    count, err := res.RowsAffected()
+    if err != nil {
+        return err
+    }
+    if count == 0 {
+        return fmt.Errorf(`incorrect id for updating task`)
+    }
+    return nil
+}

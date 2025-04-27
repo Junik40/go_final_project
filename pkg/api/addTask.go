@@ -50,11 +50,9 @@ func addTaskHandle(w http.ResponseWriter, r *http.Request) {
 	var task datab.Tasks
 	err := json.NewDecoder(r.Body).Decode(&task)
 	if err != nil {
-
 		writeJson(w,outEr{Error: err.Error()})
 		return
 	}
-
 	defer r.Body.Close()
 	Tittle := strings.ReplaceAll(task.Title, " ", "")
 	if len(Tittle) == 0 {
@@ -63,7 +61,6 @@ func addTaskHandle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	err = check(&task)
-
 	if err != nil{
 		writeJson(w,outEr{Error: err.Error()})
 		return
