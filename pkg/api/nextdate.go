@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 	"net/http"
+	"fmt"
 )
 
 
@@ -54,7 +55,8 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 		return date.Format("20060102"), nil
 	
 	default:
-		return "", nil
+		err = fmt.Errorf("ошибочный формат повторения")
+		return "", err 
 	}
 		
 
@@ -76,8 +78,6 @@ func NextDayHandler(w http.ResponseWriter, r *http.Request){
         return
     }
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(date))
+	writeJson(w, date)
     
 }
