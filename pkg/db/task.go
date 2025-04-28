@@ -66,6 +66,15 @@ func GetTask(id string) (Tasks, error) {
 		return task, err
 	}
 	defer db.Close()
+	check := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM scheduler WHERE id = %s)", id)
+	var exists bool
+	err = db.QueryRow(check).Scan(&exists)
+	if err != nil {
+		return task, err
+	}
+	if !exists {
+		return task, fmt.Errorf("incorrect id")
+	}
 	query := fmt.Sprintf("SELECT * FROM scheduler WHERE ID = %s", id)
 	row := db.QueryRow(query)
 	row.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
@@ -92,4 +101,24 @@ func UpdateTask(task *Tasks) error {
         return fmt.Errorf(`incorrect id for updating task`)
     }
     return nil
+}
+func DeleteTask(id string) error {
+	db, err := sql.Open("sqlite", "./pkg/db/scheduler.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	query := fmt.Sprintf("DELETE FROM scheduler WHERE id = %s", id)
+	_, err = db.Exec(query)
+	if err != nil {
+		return err
+	}
+
+
+
+
+	return nil
+
+
+
 }

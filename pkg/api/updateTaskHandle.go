@@ -33,9 +33,10 @@ func updateTaskHandle (w http.ResponseWriter, r *http.Request) {
 	err = datab.UpdateTask(&task)
 	if err != nil{
 
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()})	
 		return
 	}
-	writeJson(w,`json:""` )
+	fmt.Println(task)
+	writeJson(w, map[string]string{})
 	
 }

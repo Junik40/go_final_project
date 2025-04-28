@@ -10,7 +10,7 @@ import (
 
 
 func afterNow(date, now time.Time) bool {
-	return date.After(now)
+	return date.After(now) 
 }
 
 func NextDate(now time.Time, dstart string, repeat string) (string, error) {
@@ -40,6 +40,7 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 
 		for {
 			date = date.AddDate(0, 0, interval)
+
 			if afterNow(date, now) {
 				break
 			}
@@ -63,21 +64,26 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 }
 
 func NextDayHandler(w http.ResponseWriter, r *http.Request){
-	prenow := r.FormValue("now")
+	prenow := r.URL.Query().Get("now")
 	now, err := time.Parse("20060102", prenow)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	if err != nil{
+		writeJson(w,outEr{Error: err.Error()})
 		return
 	}
-	dstart := r.FormValue("date")
-	repeat := r.FormValue("repeat")
+	dstart := r.URL.Query().Get("date")
+	repeat := r.URL.Query().Get("repeat")
 
     date, err := NextDate(now, dstart, repeat)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusBadRequest)
-        return
-    }
+	if err != nil{
+		writeJson(w,outEr{Error: err.Error()})
+		return
+	}
+	date1, err := strconv.Atoi(date)
+	if err != nil{
+		writeJson(w,outEr{Error: err.Error()})
+		return
+	}
 
-	writeJson(w, date)
+	writeJson(w, date1)
     
 }
