@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 
 	datab "github.com/Junik40/go-final-project/pkg/db"
@@ -20,6 +19,5 @@ func getTaskHandle (w http.ResponseWriter, r *http.Request){
 		return
 	}
 	writeJson(w, task)
-	fmt.Println(task)
-	
+
 }

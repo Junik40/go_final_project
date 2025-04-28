@@ -10,7 +10,7 @@ import (
 
 
 func afterNow(date, now time.Time) bool {
-	return date.After(now) 
+	return date.After(now) || date.Equal(now)
 }
 
 func NextDate(now time.Time, dstart string, repeat string) (string, error) {
@@ -54,7 +54,7 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 			}
 		}
 		return date.Format("20060102"), nil
-	
+
 	default:
 		err = fmt.Errorf("ошибочный формат повторения")
 		return "", err 
