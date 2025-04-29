@@ -9,8 +9,8 @@ import (
 )
 
 
-func afterNow(date, now time.Time) bool {
-	return date.After(now) || date.Equal(now)
+func AfterNow(date, now time.Time) bool {
+	return date.After(now)
 }
 
 func NextDate(now time.Time, dstart string, repeat string) (string, error) {
@@ -34,14 +34,15 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		if interval >400{
-			return "",nil
+		if interval >400 || interval < 1{
+			err = fmt.Errorf("выход за промежуток")
+			return "", err
 		}
 
 		for {
 			date = date.AddDate(0, 0, interval)
 
-			if afterNow(date, now) {
+			if AfterNow(date, now) {
 				break
 			}
 		}
@@ -49,9 +50,10 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 	case  "y":
 		for {
 			date = date.AddDate(1, 0, 0)
-			if afterNow(date, now) {
+			if AfterNow(date, now) {
 				break
 			}
+
 		}
 		return date.Format("20060102"), nil
 
