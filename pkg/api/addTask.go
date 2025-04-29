@@ -36,13 +36,11 @@ func check(task *datab.Tasks) error {
 	if task.Date == now1 { 
 		return nil
 	}
-	fmt.Println(t)
 	if AfterNow(now, t) {
         if len(task.Repeat) == 0 {
             task.Date = now.Format("20060102")
 			
         } else {
-			fmt.Println(1111)
             task.Date = next
         }
     } 
@@ -65,9 +63,7 @@ func addTaskHandle(w http.ResponseWriter, r *http.Request) {
 		writeJson(w,outEr{Error: err.Error()})
 		return
 	}
-	fmt.Println(task)
 	err = check(&task)
-	fmt.Println(task)
 	if err != nil {
 		writeJson(w,outEr{Error: err.Error()})
 		return

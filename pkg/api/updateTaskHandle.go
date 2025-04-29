@@ -36,7 +36,6 @@ func updateTaskHandle (w http.ResponseWriter, r *http.Request) {
 		writeJson(w,outEr{Error: err.Error()})	
 		return
 	}
-	fmt.Println(task)
 	writeJson(w, map[string]string{})
 	
 }
