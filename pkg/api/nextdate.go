@@ -10,6 +10,8 @@ import (
 
 
 func AfterNow(date, now time.Time) bool {
+	date = date.Truncate(24 * time.Hour)
+	now = now.Truncate(24 * time.Hour)
 	return date.After(now)
 }
 
