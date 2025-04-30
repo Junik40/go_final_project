@@ -32,10 +32,7 @@ func check(task *datab.Tasks) error {
 	if err != nil{
 		return err
 	}
-	now1 := now.Format("20060102")  // Костыль
-	if task.Date == now1 { 
-		return nil
-	}
+	
 	if AfterNow(now, t) {
         if len(task.Repeat) == 0 {
             task.Date = now.Format("20060102")
