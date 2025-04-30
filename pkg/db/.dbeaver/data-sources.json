@@ -1,0 +1,35 @@
+{
+	"folders": {},
+	"connections": {
+		"sqlite_jdbc-196761727e5-38ed5b427b510759": {
+			"provider": "sqlite",
+			"driver": "sqlite_jdbc",
+			"name": "scheduler.db",
+			"save-password": true,
+			"configuration": {
+				"database": "C:\\Projects\\go_final_project\\pkg\\db\\scheduler.db",
+				"url": "jdbc:sqlite:C:\\Projects\\go_final_project\\pkg\\db\\scheduler.db",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Разработка",
+			"color": "255,255,255",
+			"description": "База данных для разработки",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	}
+}
