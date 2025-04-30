@@ -19,5 +19,5 @@ func getTasksHandler(w http.ResponseWriter, r *http.Request) {
 	if tasks == nil {
 		tasks = []*datab.Tasks{}
 	}
-	writeJson(w, outTasks{Tasks: tasks})	
-}
+	writeJson(w, outTasks{Tasks: tasks}, http.StatusOK)
+}	

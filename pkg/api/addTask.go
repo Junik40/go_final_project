@@ -50,29 +50,29 @@ func addTaskHandle(w http.ResponseWriter, r *http.Request) {
 	var task datab.Tasks
 	err := json.NewDecoder(r.Body).Decode(&task)
 	if err != nil {
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 	defer r.Body.Close()
 	Tittle := strings.ReplaceAll(task.Title, " ", "")
 	if len(Tittle) == 0 {
 		err = fmt.Errorf("tittle is empty")
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 	err = check(&task)
 	if err != nil {
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 
 	id,err := datab.AddTask(task)
 	if err != nil {
 
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
-	writeJson(w, outId{Id: strconv.FormatInt(id, 10)})
+	writeJson(w, outId{Id: strconv.FormatInt(id, 10)}, http.StatusOK)
 	
 
 }

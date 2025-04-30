@@ -71,7 +71,7 @@ func NextDayHandler(w http.ResponseWriter, r *http.Request){
 	prenow := r.URL.Query().Get("now")
 	now, err := time.Parse("20060102", prenow)
 	if err != nil{
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 	dstart := r.URL.Query().Get("date")
@@ -79,15 +79,15 @@ func NextDayHandler(w http.ResponseWriter, r *http.Request){
 
     date, err := NextDate(now, dstart, repeat)
 	if err != nil{
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 	date1, err := strconv.Atoi(date)
 	if err != nil{
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 
-	writeJson(w, date1)
+	writeJson(w, date1, http.StatusOK)
     
 }

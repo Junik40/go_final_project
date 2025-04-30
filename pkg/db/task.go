@@ -54,6 +54,10 @@ func GetTasks(limit int) ([]*Tasks, error) {
 		tasks = append(tasks, task)
 		
 	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
 	rows.Close()
 	var tasksp []*Tasks
 	for i := range tasks{tasksp = append(tasksp, &tasks[i])}

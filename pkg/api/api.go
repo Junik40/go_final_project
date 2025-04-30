@@ -6,9 +6,10 @@ import (
 
 )
 
-func writeJson(w http.ResponseWriter, data any) {
+func writeJson(w http.ResponseWriter, data any, status int) {
     w.Header().Set("Content-Type", "application/json, charset=utf-8")
     json.NewEncoder(w).Encode(data)
+    w.WriteHeader(status)
 
 }
 

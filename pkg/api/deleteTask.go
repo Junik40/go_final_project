@@ -14,10 +14,13 @@ func deleteTaskHandle (w http.ResponseWriter, r *http.Request){
 	defer r.Body.Close()
 	err := datab.DeleteTask(id)
 	if err != nil {
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
-	writeJson(w, map[string]string{})
+	writeJson(w, map[string]string{}, http.StatusOK)
+	
+	
+
 
 
 

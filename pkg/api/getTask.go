@@ -9,15 +9,17 @@ import (
 func getTaskHandle (w http.ResponseWriter, r *http.Request){
 	id := r.URL.Query().Get("id")
 	if id == ""{
-		writeJson(w,outEr{Error: "id is empty"})
+		writeJson(w,outEr{Error: "id is empty"}, http.StatusBadRequest)
 		return
 	}
 	defer r.Body.Close()
 	task, err := datab.GetTask(id)
 	if err != nil{
-		writeJson(w,outEr{Error: err.Error()})
+		writeJson(w,outEr{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
-	writeJson(w, task)
+	writeJson(w, task, http.StatusOK)
+	
+
 
 }
