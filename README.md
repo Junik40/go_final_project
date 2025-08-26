@@ -11,4 +11,4 @@
               1. HTTP
               2. JSON
               3. SQLite
-              4. REST AP
+              4. REST API
